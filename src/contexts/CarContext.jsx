@@ -5,6 +5,14 @@ const initialValues = {
   modelsNames: [],
   list: [],
   brandsNames: [],
+  person: {
+    name: '',
+    firstName: '',
+    lastName: '',
+    phoneNumber: '',
+    brand: '',
+    model: '',
+  },
 };
 
 export const CarContext = createContext();

@@ -31,6 +31,14 @@ export const deletePersonCar = async (carId) => {
   const response = await fetch(`${BASE_URL}/cars/people-car/${carId}`, {
     method: 'DELETE',
   });
-  console.log(response);
+  return response.json();
+};
+
+export const updatePerson = async (person) => {
+  const response = await fetch(`${BASE_URL}/cars/people-car`, {
+    headers: { 'Content-Type': 'application/json' },
+    method: 'PUT',
+    body: JSON.stringify(person),
+  });
   return response.json();
 };

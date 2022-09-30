@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -9,14 +9,22 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { deletePersonCar } from '../services/cars';
+import { CarContext } from '../contexts/CarContext';
+import peopleCarsAdapter from '../pages/Cars/adapters/adapter';
 
-export default function BasicTable({ data }) {
+export default function BasicTable({ data, openModal }) {
   const [rows, setRows] = React.useState(data);
-
+  const { setData } = useContext(CarContext);
   const handleDelete = async (carId) => {
     await deletePersonCar(carId);
     setRows(rows.filter((row) => row.carId !== carId));
   };
+  const handleUpdate = (personId) => {
+    const person = rows.find((row) => row.id === personId);
+    setData((prev) => ({ ...prev, person: peopleCarsAdapter(person) }));
+    openModal();
+  };
+
   useEffect(() => {
     if (data.length > 0) {
       setRows(data);
@@ -47,7 +55,7 @@ export default function BasicTable({ data }) {
               <TableCell align="center">{row.brandName}</TableCell>
               <TableCell align="center">{row.modelName}</TableCell>
               <TableCell align="center">
-                <Button>Editar</Button>
+                <Button onClick={() => handleUpdate(row.id)}>Editar</Button>
                 <Button onClick={() => handleDelete(row.carId)}>Eliminar</Button>
               </TableCell>
             </TableRow>
@@ -60,5 +68,5 @@ export default function BasicTable({ data }) {
 
 BasicTable.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-
+  openModal: PropTypes.func.isRequired,
 };

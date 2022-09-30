@@ -26,15 +26,13 @@ function Cars() {
     getInitData();
     getData();
   }, [getInitData, getData]);
-  // const handleSubmit = () => {
-  //   console.log('submit');
-  //   setOpen(false);
-  // };
 
   const handleClose = () => {
     setOpen(false);
+    setData((prev) => ({ ...prev, person: {} }));
     getData();
   };
+  const openModal = () => setOpen(true);
 
   return (
     <>
@@ -44,7 +42,7 @@ function Cars() {
         handleClose={() => setOpen(false)}
         content={<Fields handleClose={handleClose} />}
       />
-      <Table data={data.list} />
+      <Table data={data.list} openModal={openModal} />
     </>
   );
 }
